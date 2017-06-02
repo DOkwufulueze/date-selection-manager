@@ -30,7 +30,7 @@ module.exports = [
           }
         },
         {
-          test: /\.css$|\.scss$|\.sass$/,
+          test: /\.css$|\.scss$/,
           exclude: path.join(__dirname, 'node_modules'),
           loader: 'style!css?url=false!postcss!sass'
         }
