@@ -13,7 +13,7 @@ module.exports = {
       value: configObject.dayValue || '',
       startDigit: configObject.dayStartDigit || 1,
       endDigit: configObject.dayEndDigit || 31,
-      defaultValue: configObject.dayDefaultValue || 1,
+      defaultValue: configObject.dayDefaultValue || '',
       changeEventCallback: configObject.dayChangeEventCallback || null,
     };
   },
@@ -24,7 +24,7 @@ module.exports = {
       value: configObject.monthValue || '',
       startDigit: configObject.monthStartDigit || 1,
       endDigit: configObject.monthEndDigit || 12,
-      defaultValue: configObject.monthDefaultValue || 1,
+      defaultValue: configObject.monthDefaultValue || '',
       changeEventCallback: configObject.monthChangeEventCallback || null,
     };
   },
@@ -35,7 +35,7 @@ module.exports = {
       value: configObject.yearValue || '',
       startDigit: configObject.yearStartDigit || 1940,
       endDigit: configObject.yearEndDigit || 2060,
-      defaultValue: configObject.yearDefaultValue || 1940,
+      defaultValue: configObject.yearDefaultValue || '',
       changeEventCallback: configObject.yearChangeEventCallback || null,
     };
   },

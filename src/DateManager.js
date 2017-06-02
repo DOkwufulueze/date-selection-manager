@@ -11,8 +11,10 @@ export default class DateManager {
     this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
     this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
     this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
+    this.addChangeListenerForDaysElement();
     this.addChangeListenerForMonthsElement();
     this.addChangeListenerForYearsElement();
+    this.selectDefualtValues();
   }
 
   monthNames() {
@@ -63,10 +65,19 @@ export default class DateManager {
     }
   }
 
+  addChangeListenerForDaysElement() {
+    if (this.daysObject.selectElement) {
+      this.daysObject.selectElement.addEventListener('change', (changeEvent) => {
+        if (this.daysObject.onChange) this.daysObject.onChange();
+      });
+    }
+  }
+
   addChangeListenerForMonthsElement() {
     if (this.monthsObject.selectElement) {
       this.monthsObject.selectElement.addEventListener('change', (changeEvent) => {
         if (this.yearsObject.selectElement && this.yearsObject.selectElement.value === '') this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
+        if (this.monthsObject.onChange) this.monthsObject.onChange();
       });
     }
   }
@@ -75,8 +86,15 @@ export default class DateManager {
     if (this.yearsObject.selectElement) {
       this.yearsObject.selectElement.addEventListener('change', (changeEvent) => {
         if (this.yearsObject.selectElement.value === '' && this.monthsObject.selectElement) this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
+        if (this.yearsObject.onChange) this.yearsObject.onChange();
       });
     }
+  }
+
+  selectDefualtValues() {
+    if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
+    if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
+    if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
   }
 
   processAppropriately(monthIndex) {

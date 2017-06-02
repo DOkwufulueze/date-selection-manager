@@ -85,7 +85,7 @@ module.exports = {
       value: configObject.dayValue || '',
       startDigit: configObject.dayStartDigit || 1,
       endDigit: configObject.dayEndDigit || 31,
-      defaultValue: configObject.dayDefaultValue || 1,
+      defaultValue: configObject.dayDefaultValue || '',
       changeEventCallback: configObject.dayChangeEventCallback || null
     };
   },
@@ -96,7 +96,7 @@ module.exports = {
       value: configObject.monthValue || '',
       startDigit: configObject.monthStartDigit || 1,
       endDigit: configObject.monthEndDigit || 12,
-      defaultValue: configObject.monthDefaultValue || 1,
+      defaultValue: configObject.monthDefaultValue || '',
       changeEventCallback: configObject.monthChangeEventCallback || null
     };
   },
@@ -107,7 +107,7 @@ module.exports = {
       value: configObject.yearValue || '',
       startDigit: configObject.yearStartDigit || 1940,
       endDigit: configObject.yearEndDigit || 2060,
-      defaultValue: configObject.yearDefaultValue || 1940,
+      defaultValue: configObject.yearDefaultValue || '',
       changeEventCallback: configObject.yearChangeEventCallback || null
     };
   },
@@ -212,8 +212,10 @@ var DateManager = function () {
       this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
       this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
       this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
+      this.addChangeListenerForDaysElement();
       this.addChangeListenerForMonthsElement();
       this.addChangeListenerForYearsElement();
+      this.selectDefualtValues();
     }
   }, {
     key: 'monthNames',
@@ -273,26 +275,46 @@ var DateManager = function () {
       }
     }
   }, {
+    key: 'addChangeListenerForDaysElement',
+    value: function addChangeListenerForDaysElement() {
+      var _this2 = this;
+
+      if (this.daysObject.selectElement) {
+        this.daysObject.selectElement.addEventListener('change', function (changeEvent) {
+          if (_this2.daysObject.onChange) _this2.daysObject.onChange();
+        });
+      }
+    }
+  }, {
     key: 'addChangeListenerForMonthsElement',
     value: function addChangeListenerForMonthsElement() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.monthsObject.selectElement) {
         this.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this2.yearsObject.selectElement && _this2.yearsObject.selectElement.value === '') _this2.processForYearType(_this2.monthsObject.selectElement.selectedIndex, _this2.numberOfDaysInMonthsPerYearType().normalYear);else _this2.processAppropriately(_this2.monthsObject.selectElement.selectedIndex);
+          if (_this3.yearsObject.selectElement && _this3.yearsObject.selectElement.value === '') _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
+          if (_this3.monthsObject.onChange) _this3.monthsObject.onChange();
         });
       }
     }
   }, {
     key: 'addChangeListenerForYearsElement',
     value: function addChangeListenerForYearsElement() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.yearsObject.selectElement) {
         this.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this3.yearsObject.selectElement.value === '' && _this3.monthsObject.selectElement) _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
+          if (_this4.yearsObject.selectElement.value === '' && _this4.monthsObject.selectElement) _this4.processForYearType(_this4.monthsObject.selectElement.selectedIndex, _this4.numberOfDaysInMonthsPerYearType().normalYear);else _this4.processAppropriately(_this4.monthsObject.selectElement.selectedIndex);
+          if (_this4.yearsObject.onChange) _this4.yearsObject.onChange();
         });
       }
+    }
+  }, {
+    key: 'selectDefualtValues',
+    value: function selectDefualtValues() {
+      if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
+      if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
+      if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
     }
   }, {
     key: 'processAppropriately',
