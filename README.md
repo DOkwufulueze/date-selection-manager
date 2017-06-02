@@ -1,4 +1,4 @@
-# DateSelectionManager
+# date-selection-manager
 
 Author: Okwufulueze Emeka Daniel
 
