@@ -1,45 +1,15 @@
 /***
-  Author: Okwufulueze Emeka Daniel
+  Author: Daniel Okwufulueze
   Date: 13/02/2016
-  Entry Point: loadInitialDate()
-
-  Supply parameters to loadInitialDate(daysObject, monthsObject, yearsObject) 
-  where:
-    daysObject = {
-      selectElement: [Select Element],
-      initialOptionElementText: Text,
-      initialOptionElementValue: Value,
-      startDigit: startDigit,
-      endDigit: endDigit
-    }
-
-    monthsObject = {
-      selectElement: [Select Element],
-      initialOptionElementText: Text,
-      initialOptionElementValue: Value,
-      startDigit: startDigit,
-      endDigit: endDigit
-    }
-
-    yearsObject = {
-      selectElement: [Select Element],
-      initialOptionElementText: Text,
-      initialOptionElementValue: Value,
-      startDigit: startDigit,
-      endDigit: endDigit
-    }
-
-    startDigit and endDigit are 1 and 12 respectively for monthsObject
-
 */
 
-class DateSelectionManager {
+export default class DateManager {
   loadInitialDate(daysObject, monthsObject, yearsObject) {
     this.daysObject = daysObject;
     this.monthsObject = monthsObject;
     this.yearsObject = yearsObject;
     this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
-    this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit), false;
+    this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
     this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
     this.addChangeListenerForMonthsElement();
     this.addChangeListenerForYearsElement();
@@ -79,36 +49,48 @@ class DateSelectionManager {
       let optionElement = document.createElement('option');
       optionElement.value = option;
       optionElement.innerHTML = option;
-      this.selectObject.selectElement.appendChild(optionElement);
+      if (this.selectObject.selectElement) this.selectObject.selectElement.appendChild(optionElement);
     });
   }
 
   arrangeInitialOption() {
-    this.selectObject.selectElement.innerHTML = '';
-    let initialOption = document.createElement('option');
-    initialOption.value = this.selectObject.initialOptionElementValue;
-    initialOption.innerHTML = this.selectObject.initialOptionElementText;
-    this.selectObject.selectElement.appendChild(initialOption);
+    if (this.selectObject.selectElement) {
+      this.selectObject.selectElement.innerHTML = '';
+      let initialOption = document.createElement('option');
+      initialOption.value = this.selectObject.initialOptionElementValue;
+      initialOption.innerHTML = this.selectObject.initialOptionElementText;
+      this.selectObject.selectElement.appendChild(initialOption);
+    }
   }
 
   addChangeListenerForMonthsElement() {
-    this.monthsObject.selectElement.addEventListener('change', (changeEvent) => {
-      this.yearsObject.selectElement.value === '' ? this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear) : this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-    });
+    if (this.monthsObject.selectElement) {
+      this.monthsObject.selectElement.addEventListener('change', (changeEvent) => {
+        if (this.yearsObject.selectElement && this.yearsObject.selectElement.value === '') this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
+      });
+    }
   }
 
   addChangeListenerForYearsElement() {
-    this.yearsObject.selectElement.addEventListener('change', (changeEvent) => {
-      this.yearsObject.selectElement.value === '' ? this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear) : this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-    });
+    if (this.yearsObject.selectElement) {
+      this.yearsObject.selectElement.addEventListener('change', (changeEvent) => {
+        if (this.yearsObject.selectElement.value === '' && this.monthsObject.selectElement) this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
+      });
+    }
   }
 
   processAppropriately(monthIndex) {
-    eval(this.yearsObject.selectElement.value) % 4 === 0 ? this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear) : this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear)
+    // jshint evil: true
+    
+    if (this.yearsObject.selectElement) {
+      if (eval(this.yearsObject.selectElement.value) % 4 === 0) this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear); else this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear);
+    }
   }
 
   processForYearType(monthIndex, yearType) {
-    if (monthIndex > 0) {
+    // jshint evil: true
+    
+    if (monthIndex > 0 && this.daysObject.selectElement) {
       if (eval(this.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
         this.daysObject.selectElement.selectedIndex = 0;
         this.fireChangeEvent(this.daysObject.selectElement);
