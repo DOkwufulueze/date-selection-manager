@@ -9,8 +9,9 @@
     "test": "echo '==> Testing:' && mocha --compilers js:babel-core/register test/",
     "posttest": "npm run lint -s",
     "info": "echo 'This package takes care of date entries on HTML select elements. It prevents the entry of invalid dates like February 30, June 31, or February 29 on a non-leap year.'",
-    "watch": "echo '==>Watching' && webpack --watch --progress --colors",
-    "dist": "echo '==>Distributing' && if test -e 'demo/js/bundle/demo.js'; then $(cp demo/js/bundle/demo.js dist/js/date-selection-manager.js); fi"
+    "bundler": "echo '==>Watching And Bundling' && (npm run watch -s &) && webpack --watch --progress --colors",
+    "watch": "echo '==>Watching' && watch 'npm run dist -s' demo/js/bundle/",
+    "dist": "echo '==>Disting' && if test -e 'demo/js/bundle/demo.js'; then $(cp demo/js/bundle/demo.js dist/js/date-selection-manager.js); fi"
   },
   "repository": {
     "type": "git",
@@ -34,15 +35,23 @@
   "homepage": "https://github.com/DOkwufulueze/date-selection-manager",
   "readme": "https://github.com/DOkwufulueze/date-selection-manager#readme",
   "devDependencies": {
+    "autoprefixer": "^7.1.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "chai": "^4.0.0",
+    "css-loader": "^0.28.4",
     "jsdom": "^11.0.0",
     "jshint": "^2.9.4",
+    "jshint-loader": "^0.8.4",
     "mocha": "^3.4.2",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.5",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.18.1",
     "uglifyjs-webpack-plugin": "^0.4.3",
+    "watch": "^1.0.2",
     "webpack": "^2.1.0-beta.22"
   },
   "jshintConfig": {

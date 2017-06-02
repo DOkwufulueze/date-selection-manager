@@ -1,3 +1,8 @@
+/***
+  Author: Daniel Okwufulueze
+  Date: 13/02/2016
+*/
+
 let dateSelectionManager = require('../src/date-selection-manager');
 require('./utilities/mockDOM.js');
 let assert = require('assert');
@@ -16,15 +21,5 @@ describe('DateSelectionManager', () => {
     it('should have no argument', () => {
       expect(dateSelectionManager.loadDate.length).to.equal(0);
     });
-
-    // let configObject = {
-    //   dayId: 'day-select',
-    //   dayText: 'DAY',
-    // };
-    // dateSelectionManager.loadDate(configObject);
-    // // console.log(dateSelectionManager.loadDate.length, configObject);
-    // it('should have one argument', () => {
-    //   expect(dateSelectionManager.loadDate.length).to.equal(1);
-    // });
   });
 });

@@ -35,7 +35,7 @@ export default class DateManager {
     let arrayForOptions = [];
     startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
     endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
-    for (var i = startDigit; i <= endDigit; i++) {
+    for (let i = startDigit; i <= endDigit; i++) {
       arrayForOptions[i] = useNumberRangeDirectly ? i : this.monthNames()[i - 1];
     }
 
@@ -104,7 +104,7 @@ export default class DateManager {
   }
 
   removeExcessOption(selectElement, limit) {
-    for (var i = selectElement.options.length - 1; i > limit; i--) {
+    for (let i = selectElement.options.length - 1; i > limit; i--) {
       selectElement.removeChild(selectElement.options[i]);
     }
   }

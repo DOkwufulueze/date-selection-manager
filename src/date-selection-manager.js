@@ -1,3 +1,8 @@
+/***
+  Author: Daniel Okwufulueze
+  Date: 13/02/2016
+*/
+
 import DateManager from './DateManager';
 
 module.exports = {

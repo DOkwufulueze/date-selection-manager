@@ -1,0 +1,49 @@
+html {
+  height: 100%;
+
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+
+    #wrapper {
+      width: 100%;
+      display: block;
+      margin: auto;
+      text-align: center;
+
+      h1 {
+        width: 100%;
+      }
+
+      p {
+        width: 100%;
+      }
+
+      div.date-holder {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        height: 100px;
+        width: 460px;
+        margin: auto;
+        text-align: center;
+
+        select {
+          background: #ffffff;
+          color: #666;
+          height: 40px;
+          line-height: 40px;
+          width: 150px;
+          margin-right: 2px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+}
