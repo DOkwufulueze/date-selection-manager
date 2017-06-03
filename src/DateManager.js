@@ -3,7 +3,7 @@
   Date: 13/02/2016
 */
 
-export default class DateManager {
+module.exports = class DateManager {
   loadInitialDate(daysObject, monthsObject, yearsObject) {
     this.daysObject = daysObject;
     this.monthsObject = monthsObject;

@@ -3,7 +3,7 @@
   Date: 13/02/2016
 */
 
-import DateManager from './DateManager';
+let DateManager = require('./DateManager');
 
 module.exports = {
   dayConfigObject: (configObject) => {

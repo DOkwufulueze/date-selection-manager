@@ -73,11 +73,12 @@
 "use strict";
 
 
-var _DateManager = __webpack_require__(3);
+/***
+  Author: Daniel Okwufulueze
+  Date: 13/02/2016
+*/
 
-var _DateManager2 = _interopRequireDefault(_DateManager);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var DateManager = __webpack_require__(3);
 
 module.exports = {
   dayConfigObject: function dayConfigObject(configObject) {
@@ -128,7 +129,7 @@ module.exports = {
       type: 'year',
       year: module.exports.yearConfigObject(configObject)
     });
-    var dateManager = new _DateManager2.default();
+    var dateManager = new DateManager();
     dateManager.loadInitialDate(daysObject, monthsObject, yearsObject);
   },
   createSelectObject: function createSelectObject() {
@@ -144,10 +145,7 @@ module.exports = {
       onChange: configObject[configObject.type].changeEventCallback
     };
   }
-}; /***
-     Author: Daniel Okwufulueze
-     Date: 13/02/2016
-   */
+};
 
 /***/ }),
 /* 1 */
@@ -208,10 +206,6 @@ dateSelectionmanager.loadDate();
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -221,7 +215,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   Date: 13/02/2016
 */
 
-var DateManager = function () {
+module.exports = function () {
   function DateManager() {
     _classCallCheck(this, DateManager);
   }
@@ -383,8 +377,6 @@ var DateManager = function () {
 
   return DateManager;
 }();
-
-exports.default = DateManager;
 
 /***/ }),
 /* 4 */
