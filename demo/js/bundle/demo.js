@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -33,16 +33,18 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmory imports with the correct context
+/******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
-/******/ 	// define getter function for harmory exports
+/******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		Object.defineProperty(exports, name, {
-/******/ 			configurable: false,
-/******/ 			enumerable: true,
-/******/ 			get: getter
-/******/ 		});
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -61,17 +63,17 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var _DateManager = __webpack_require__(2);
+
+var _DateManager = __webpack_require__(3);
 
 var _DateManager2 = _interopRequireDefault(_DateManager);
 
@@ -147,14 +149,14 @@ module.exports = {
      Date: 13/02/2016
    */
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(3);
+var content = __webpack_require__(4);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -162,14 +164,14 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(5)(content, options);
+var update = __webpack_require__(6)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js?url=false!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./demo.scss", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js?url=false!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./demo.scss");
+		module.hot.accept("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./demo.scss", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js??ref--1-1!../../node_modules/postcss-loader/lib/index.js!../../node_modules/sass-loader/lib/loader.js!./demo.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -178,12 +180,33 @@ if(false) {
 	module.hot.dispose(function() { update(); });
 }
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
+
+/***
+  Author: Daniel Okwufulueze
+  Date: 13/02/2016
+*/
+
+__webpack_require__(1);
+
+var dateSelectionmanager = __webpack_require__(0);
+
+var dateDOM = new DOMParser().parseFromString('\n  <div id=\'wrapper\'>\n    <h1>date-selection-manager Demo</h1>\n    <p>Visit <a href=\'https://www.github.com/DOkwufulueze/date-selection-manager\' target=\'_blank\'>The Containing Repo</a> to clone</p>\n    <div class=\'date-holder\'>\n      <select id=\'day\'><option value=\'\'>Day</option></select>\n      <select id=\'month\'><option value=\'\'>Month</option></select>\n      <select id=\'year\'><option value=\'\'>Year</option></select>\n    </div>\n  </div>\n', 'text/html').body.firstChild;
+
+document.body.appendChild(dateDOM);
+dateSelectionmanager.loadDate();
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -363,11 +386,11 @@ var DateManager = function () {
 
 exports.default = DateManager;
 
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(4)(undefined);
+exports = module.exports = __webpack_require__(5)(undefined);
 // imports
 
 
@@ -377,9 +400,9 @@ exports.push([module.i, "html {\n  height: 100%; }\n  html body {\n    height: 1
 // exports
 
 
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -459,9 +482,9 @@ function toComment(sourceMap) {
 }
 
 
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
 
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
@@ -506,7 +529,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(6);
+var	fixUrls = __webpack_require__(7);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -818,9 +841,9 @@ function updateLink (link, options, obj) {
 }
 
 
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
 
 
 /**
@@ -913,26 +936,5 @@ module.exports = function (css) {
 };
 
 
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-/***
-  Author: Daniel Okwufulueze
-  Date: 13/02/2016
-*/
-
-__webpack_require__(1);
-
-var dateSelectionmanager = __webpack_require__(0);
-
-var dateDOM = new DOMParser().parseFromString('\n  <div id=\'wrapper\'>\n    <h1>date-selection-manager Demo</h1>\n    <p>Visit <a href=\'https://www.github.com/DOkwufulueze/date-selection-manager\' target=\'_blank\'>The Containing Repo</a> to clone</p>\n    <div class=\'date-holder\'>\n      <select id=\'day\'><option value=\'\'>Day</option></select>\n      <select id=\'month\'><option value=\'\'>Month</option></select>\n      <select id=\'year\'><option value=\'\'>Year</option></select>\n    </div>\n  </div>\n', 'text/html').body.firstChild;
-
-document.body.appendChild(dateDOM);
-dateSelectionmanager.loadDate();
-
-/***/ }
+/***/ })
 /******/ ]);
