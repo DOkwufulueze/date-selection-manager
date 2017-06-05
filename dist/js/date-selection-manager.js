@@ -84,6 +84,7 @@ var dateManager = new DateManager();
 module.exports = {
   dayConfigObject: function dayConfigObject(configObject) {
     return {
+      container: configObject.dayContainer || document,
       id: configObject.dayId || 'day',
       text: configObject.dayText || 'Day',
       value: configObject.dayValue || '',
@@ -95,6 +96,7 @@ module.exports = {
   },
   monthConfigObject: function monthConfigObject(configObject) {
     return {
+      container: configObject.monthContainer || document,
       id: configObject.monthId || 'month',
       text: configObject.monthText || 'Month',
       value: configObject.monthValue || '',
@@ -106,6 +108,7 @@ module.exports = {
   },
   yearConfigObject: function yearConfigObject(configObject) {
     return {
+      container: configObject.yearContainer || document,
       id: configObject.yearId || 'year',
       text: configObject.yearText || 'Year',
       value: configObject.yearValue || '',
@@ -136,7 +139,7 @@ module.exports = {
     var configObject = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     return {
-      selectElement: document.querySelector('select#' + configObject[configObject.type].id),
+      selectElement: configObject[configObject.type].container.querySelector('select#' + configObject[configObject.type].id),
       initialOptionElementText: configObject[configObject.type].text,
       initialOptionElementValue: configObject[configObject.type].value,
       startDigit: configObject[configObject.type].startDigit,
@@ -197,11 +200,14 @@ __webpack_require__(1);
 
 var dateSelectionManager = __webpack_require__(0);
 
-var dateDOM = new DOMParser().parseFromString('\n  <div id=\'wrapper\'>\n    <h1>date-selection-manager Demo</h1>\n    <p>Visit <a href=\'https://www.github.com/DOkwufulueze/date-selection-manager\' target=\'_blank\'>The Containing Repo</a> to clone</p>\n    <div class=\'date-holder\'>\n      <select id=\'day\'><option value=\'\'>Day</option></select>\n      <select id=\'month\'><option value=\'\'>Month</option></select>\n      <select id=\'year\'><option value=\'\'>Year</option></select>\n    </div>\n  </div>\n', 'text/html').body.firstChild;
+var dateDOM = new DOMParser().parseFromString('\n  <div id=\'wrapper\'>\n    <h1 class=\'title\'>date-selection-manager Demo</h1>\n    <p>Visit <a href=\'https://www.github.com/DOkwufulueze/date-selection-manager\' target=\'_blank\'>The Containing Repo</a> to clone</p>\n    <div class=\'date-holder\'>\n      <select id=\'day\'><option value=\'\'>Day</option></select>\n      <select id=\'month\'><option value=\'\'>Month</option></select>\n      <select id=\'year\'><option value=\'\'>Year</option></select>\n    </div>\n  </div>\n', 'text/html').body.firstChild;
 
 document.body.appendChild(dateDOM);
 
 dateSelectionManager.loadDate({
+  dayContainer: document.querySelector('div.date-holder'),
+  monthContainer: document.querySelector('div.date-holder'),
+  yearContainer: document.querySelector('div.date-holder'),
   dayChangeEventCallback: function dayChangeEventCallback(changeEvent) {
     // Do something with the change in value
   },

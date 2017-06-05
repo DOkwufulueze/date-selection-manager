@@ -9,6 +9,7 @@ let dateManager = new DateManager();
 module.exports = {
   dayConfigObject: (configObject) => {
     return {
+      container: configObject.dayContainer || document,
       id: configObject.dayId || 'day',
       text: configObject.dayText || 'Day',
       value: configObject.dayValue || '',
@@ -20,6 +21,7 @@ module.exports = {
   },
   monthConfigObject: (configObject) => {
     return {
+      container: configObject.monthContainer || document,
       id: configObject.monthId || 'month',
       text: configObject.monthText || 'Month',
       value: configObject.monthValue || '',
@@ -31,6 +33,7 @@ module.exports = {
   },
   yearConfigObject: (configObject) => {
     return {
+      container: configObject.yearContainer || document,
       id: configObject.yearId || 'year',
       text: configObject.yearText || 'Year',
       value: configObject.yearValue || '',
@@ -57,7 +60,7 @@ module.exports = {
   },
   createSelectObject: (configObject = {}) => {
     return {
-      selectElement: document.querySelector(`select#${configObject[configObject.type].id}`),
+      selectElement: configObject[configObject.type].container.querySelector(`select#${configObject[configObject.type].id}`),
       initialOptionElementText: configObject[configObject.type].text,
       initialOptionElementValue: configObject[configObject.type].value,
       startDigit: configObject[configObject.type].startDigit,

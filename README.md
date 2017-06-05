@@ -62,29 +62,30 @@ Where `configObject` can be patterned thus:
 
 ```javascript
   let configObject = {
-    dayId: [optionalValue],
-    dayText: [optionalValue],
-    dayValue: [optionalValue],
-    dayStartDigit: [optionalValue],
-    dayEndDigit: [optionalValue],
-    dayDefaultValue: [optionalValue],
-    dayChangeEventCallback: [optionalValue],
-
-    monthId: [optionalValue],
-    monthText: [optionalValue],
-    monthValue: [optionalValue],
-    monthStartDigit: [optionalValue],
-    monthEndDigit: [optionalValue],
-    monthDefaultValue: [optionalValue],
-    monthChangeEventCallback: [optionalValue],
-
-    yearId: [optionalValue],
-    yearText: [optionalValue],
-    yearValue: [optionalValue],
-    yearStartDigit: [optionalValue],
-    yearEndDigit: [optionalValue],
-    yearDefaultValue: [optionalValue],
-    yearChangeEventCallback: [optionalValue],
+    dayContainer: [optionalValue], // defaults to document
+    dayId: [optionalValue], // defaults to 'day'
+    dayText: [optionalValue], // defaults to 'Day'
+    dayValue: [optionalValue], // defaults to ''
+    dayStartDigit: [optionalValue], // defaults to '1'
+    dayEndDigit: [optionalValue], // defaults to '31'
+    dayDefaultValue: [optionalValue], // defaults to ''
+    dayChangeEventCallback: [optionalValue], // defaults to null
+    monthContainer: [optionalValue], // defaults to document
+    monthId: [optionalValue], // defaults to 'month'
+    monthText: [optionalValue], // defaults to 'Month'
+    monthValue: [optionalValue], // defaults to ''
+    monthStartDigit: [optionalValue], // defaults to '1'
+    monthEndDigit: [optionalValue], // defaults to '12'
+    monthDefaultValue: [optionalValue], // defaults to ''
+    monthChangeEventCallback: [optionalValue], // defaults to null
+    yearContainer: [optionalValue], // defaults to document
+    yearId: [optionalValue], // defaults to 'year'
+    yearText: [optionalValue], // defaults to 'Year'
+    yearValue: [optionalValue], // defaults to ''
+    yearStartDigit: [optionalValue], // defaults to '1940'
+    yearEndDigit: [optionalValue], // defaults to '2060'
+    yearDefaultValue: [optionalValue], // defaults to ''
+    yearChangeEventCallback: [optionalValue], // defaults to null
   }
 ```
 
@@ -93,6 +94,7 @@ Details on the names and default values of the configuration object properties a
 
 Key | Default Value | Explanation
 --- | ------------- | -----------
+dayContainer | `document` | The DOM element you want to reference as holding the 'day' select element.
 dayId | 'day' | The id of the select element representing "day".
 dayText | 'Day' | The text of the first option element in the select element representing "day".
 dayValue | '' | The value of the first option element in the select element representing "day".
@@ -100,6 +102,7 @@ dayStartDigit| '1' | Where the select element representing "day" starts counting
 dayEndDigit | '31' | The number at which the select element representing "day" ends.
 dayDefaultValue | '' | The value selected by default on the select element representing "day" once date-selection-manager is invoked.
 dayChangeEventCallback | null | A callback function that is called when the select element representing "day" changes value.
+monthContainer | `document` | The DOM element you want to reference as holding the 'month' select element.
 monthId | 'month' | The id of the select element representing "month".
 monthText | 'Month' | The text of the first option element in the select element representing "month".
 monthValue | '' | The value of the first option element in the select element representing "month".
@@ -107,6 +110,7 @@ monthStartDigit| '1' | Where the select element representing "month" starts coun
 monthEndDigit | '12' | The number at which the select element representing "month" ends.
 monthDefaultValue | '' | The value selected by default on the select element representing "month" once date-selection-manager is invoked.
 monthChangeEventCallback | null | A callback function that is called when the select element representing "month" changes value.
+yearContainer | `document` | The DOM element you want to reference as holding the 'year' select element.
 yearId | 'year' | The id of the select element representing "year".
 yearText | 'Year' | The text of the first option element in the select element representing "year".
 yearValue | '' | The value of the first option element in the select element representing "year".
@@ -116,7 +120,7 @@ yearDefaultValue | '' | The value selected by default on the select element repr
 yearChangeEventCallback | null | A callback function that is called when the select element representing "year" changes value.
 
 <br><br>
-# Change Event Callbacks
+# Change-Event Callbacks
 If you want to do something whenever a select element changes value, invoke `dateSelectionManager` with a configObject having the appropriate ChangeEventCallback [dayChangeEventCallback, monthChangeEventCallback, yearChangeEventCallback]. You can pass a parameter to the corresponding callback function which will stand for the event object returned whenever a change occurs in the select element. For example:
 
 ```javascript
