@@ -132,4 +132,4 @@ module.exports = class DateManager {
     eventObject.initEvent('change', true, true);
     element.dispatchEvent(eventObject);
   }
-}
+};

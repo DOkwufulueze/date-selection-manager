@@ -4,7 +4,8 @@
 */
 
 let DateManager = require('./DateManager');
-
+let dateManager = new DateManager();
+    
 module.exports = {
   dayConfigObject: (configObject) => {
     return {
@@ -52,7 +53,6 @@ module.exports = {
       type: 'year',
       year: module.exports.yearConfigObject(configObject),
     });
-    let dateManager = new DateManager();
     dateManager.loadInitialDate(daysObject, monthsObject, yearsObject);
   },
   createSelectObject: (configObject = {}) => {
@@ -65,5 +65,8 @@ module.exports = {
       defaultValue: configObject[configObject.type].defaultValue,
       onChange: configObject[configObject.type].changeEventCallback,
     };
+  },
+  getMonthNames: () => {
+    return dateManager.monthNames();
   }
 };

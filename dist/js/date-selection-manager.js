@@ -79,6 +79,7 @@
 */
 
 var DateManager = __webpack_require__(3);
+var dateManager = new DateManager();
 
 module.exports = {
   dayConfigObject: function dayConfigObject(configObject) {
@@ -129,7 +130,6 @@ module.exports = {
       type: 'year',
       year: module.exports.yearConfigObject(configObject)
     });
-    var dateManager = new DateManager();
     dateManager.loadInitialDate(daysObject, monthsObject, yearsObject);
   },
   createSelectObject: function createSelectObject() {
@@ -144,6 +144,9 @@ module.exports = {
       defaultValue: configObject[configObject.type].defaultValue,
       onChange: configObject[configObject.type].changeEventCallback
     };
+  },
+  getMonthNames: function getMonthNames() {
+    return dateManager.monthNames();
   }
 };
 
