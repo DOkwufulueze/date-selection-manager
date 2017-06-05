@@ -116,7 +116,7 @@ yearDefaultValue | '' | The value selected by default on the select element repr
 yearChangeEventCallback | null | A callback function that is called when the select element representing "year" changes value.
 
 <br><br>
-#Change Event Callbacks
+# Change Event Callbacks
 If you want to do something whenever a select element changes value, invoke `dateSelectionManager` with a configObject having the appropriate ChangeEventCallback [dayChangeEventCallback, monthChangeEventCallback, yearChangeEventCallback]. You can pass a parameter to the corresponding callback function which will stand for the event object returned whenever a change occurs in the select element. For example:
 
 ```javascript
