@@ -68,7 +68,7 @@ module.exports = class DateManager {
   addChangeListenerForDaysElement() {
     if (this.daysObject.selectElement) {
       this.daysObject.selectElement.addEventListener('change', (changeEvent) => {
-        if (this.daysObject.onChange) this.daysObject.onChange();
+        if (this.daysObject.onChange) this.daysObject.onChange(changeEvent);
       });
     }
   }
@@ -77,7 +77,7 @@ module.exports = class DateManager {
     if (this.monthsObject.selectElement) {
       this.monthsObject.selectElement.addEventListener('change', (changeEvent) => {
         if (this.yearsObject.selectElement && this.yearsObject.selectElement.value === '') this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-        if (this.monthsObject.onChange) this.monthsObject.onChange();
+        if (this.monthsObject.onChange) this.monthsObject.onChange(changeEvent);
       });
     }
   }
@@ -86,7 +86,7 @@ module.exports = class DateManager {
     if (this.yearsObject.selectElement) {
       this.yearsObject.selectElement.addEventListener('change', (changeEvent) => {
         if (this.yearsObject.selectElement.value === '' && this.monthsObject.selectElement) this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-        if (this.yearsObject.onChange) this.yearsObject.onChange();
+        if (this.yearsObject.onChange) this.yearsObject.onChange(changeEvent);
       });
     }
   }

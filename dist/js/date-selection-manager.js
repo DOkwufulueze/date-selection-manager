@@ -195,12 +195,23 @@ if(false) {
 
 __webpack_require__(1);
 
-var dateSelectionmanager = __webpack_require__(0);
+var dateSelectionManager = __webpack_require__(0);
 
 var dateDOM = new DOMParser().parseFromString('\n  <div id=\'wrapper\'>\n    <h1>date-selection-manager Demo</h1>\n    <p>Visit <a href=\'https://www.github.com/DOkwufulueze/date-selection-manager\' target=\'_blank\'>The Containing Repo</a> to clone</p>\n    <div class=\'date-holder\'>\n      <select id=\'day\'><option value=\'\'>Day</option></select>\n      <select id=\'month\'><option value=\'\'>Month</option></select>\n      <select id=\'year\'><option value=\'\'>Year</option></select>\n    </div>\n  </div>\n', 'text/html').body.firstChild;
 
 document.body.appendChild(dateDOM);
-dateSelectionmanager.loadDate();
+
+dateSelectionManager.loadDate({
+  dayChangeEventCallback: function dayChangeEventCallback(changeEvent) {
+    // Do something with the change in value
+  },
+  monthChangeEventCallback: function monthChangeEventCallback(changeEvent) {
+    // Do something with the change in value
+  },
+  yearChangeEventCallback: function yearChangeEventCallback(changeEvent) {
+    // Do something with the change in value
+  }
+});
 
 /***/ }),
 /* 3 */
@@ -301,7 +312,7 @@ module.exports = function () {
 
       if (this.daysObject.selectElement) {
         this.daysObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this2.daysObject.onChange) _this2.daysObject.onChange();
+          if (_this2.daysObject.onChange) _this2.daysObject.onChange(changeEvent);
         });
       }
     }
@@ -313,7 +324,7 @@ module.exports = function () {
       if (this.monthsObject.selectElement) {
         this.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
           if (_this3.yearsObject.selectElement && _this3.yearsObject.selectElement.value === '') _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
-          if (_this3.monthsObject.onChange) _this3.monthsObject.onChange();
+          if (_this3.monthsObject.onChange) _this3.monthsObject.onChange(changeEvent);
         });
       }
     }
@@ -325,7 +336,7 @@ module.exports = function () {
       if (this.yearsObject.selectElement) {
         this.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
           if (_this4.yearsObject.selectElement.value === '' && _this4.monthsObject.selectElement) _this4.processForYearType(_this4.monthsObject.selectElement.selectedIndex, _this4.numberOfDaysInMonthsPerYearType().normalYear);else _this4.processAppropriately(_this4.monthsObject.selectElement.selectedIndex);
-          if (_this4.yearsObject.onChange) _this4.yearsObject.onChange();
+          if (_this4.yearsObject.onChange) _this4.yearsObject.onChange(changeEvent);
         });
       }
     }

@@ -9,8 +9,8 @@ This manager takes care of date entries via select elements. It prevents the ent
 ![date-selection-manager](/images/date-selection-manager.png)
 
 ```javascript
-    let dateSelectionmanager = require('date-selection-manager');
-    dateSelectionmanager.loadDate(configObject); // the configObject parameter can be absent
+    let dateSelectionManager = require('date-selection-manager');
+    dateSelectionManager.loadDate(configObject); // the configObject parameter can be absent
 ```
 
 <br><br>
@@ -38,12 +38,12 @@ This manager takes care of date entries via select elements. It prevents the ent
 1. In your JS file which you may need to transpile using [babel](https://github.com/babel/babel) perhaps, do the following:
     * Require date-selection-manager
         ```
-          let dateSelectionmanager = require('date-selection-manager');
+          let dateSelectionManager = require('date-selection-manager');
         ```
 
     * Invoke the manager to start managing your date DOM elements created in **step  2**
         ```
-          dateSelectionmanager.loadDate();
+          dateSelectionManager.loadDate();
         ```
 
 <br><br>
@@ -115,6 +115,25 @@ yearEndDigit | '2060' | The number at which the select element representing "yea
 yearDefaultValue | '' | The value selected by default on the select element representing "year" once date-selection-manager is invoked.
 yearChangeEventCallback | null | A callback function that is called when the select element representing "year" changes value.
 
+<br><br>
+#Change Event Callbacks
+If you want to do something whenever a select element changes value, invoke `dateSelectionManager` with a configObject having the appropriate ChangeEventCallback [dayChangeEventCallback, monthChangeEventCallback, yearChangeEventCallback]. You can pass a parameter to the corresponding callback function which will stand for the event object returned whenever a change occurs in the select element. For example:
+
+```javascript
+  dateSelectionManager.loadDate({
+    // changeEvent is the event object returned upon a change in the select element.
+    //
+    dayChangeEventCallback: (changeEvent) => {
+      // Do something after the change. You can work with the change event: changeEvent
+    },
+    monthChangeEventCallback: (changeEvent) => {
+      // Do something after the change. You can work with the change event: changeEvent
+    },
+    yearChangeEventCallback: (changeEvent) => {
+      // Do something after the change. You can work with the change event: changeEvent
+    }
+  });
+```
 <br><br>
 ##### Please send bug issues you may encounter to [Issues](https://www.github.com/DOkwufulueze/date-selection-manager/issues)
 

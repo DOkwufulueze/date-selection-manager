@@ -5,7 +5,7 @@
 
 require('../css/demo');
 
-let dateSelectionmanager = require('../../src/date-selection-manager');
+let dateSelectionManager = require('../../src/date-selection-manager');
 
 const dateDOM = new DOMParser().parseFromString(`
   <div id='wrapper'>
@@ -20,4 +20,15 @@ const dateDOM = new DOMParser().parseFromString(`
 `, 'text/html').body.firstChild;
 
 document.body.appendChild(dateDOM);
-dateSelectionmanager.loadDate();
+
+dateSelectionManager.loadDate({
+  dayChangeEventCallback: (changeEvent) => {
+    // Do something with the change in value
+  },
+  monthChangeEventCallback: (changeEvent) => {
+    // Do something with the change in value
+  },
+  yearChangeEventCallback: (changeEvent) => {
+    // Do something with the change in value
+  },
+});
