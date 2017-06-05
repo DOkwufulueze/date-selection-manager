@@ -1,6 +1,6 @@
 {
   "name": "date-selection-manager",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "This package takes care of date entries on HTML select elements. It prevents the entry of invalid dates like February 30, June 31, or February 29 on a non-leap year.",
   "main": "src/date-selection-manager.js",
   "scripts": {
