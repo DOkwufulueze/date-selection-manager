@@ -4,7 +4,7 @@ Author: Daniel Okwufulueze
 
 Date: 13/02/2016
 
-This manager takes care of date entries via select elements. It prevents the entry of invalid dates like February 30, June 31, or February 29 on a non-leap year.
+This package takes care of date entries via select elements. It prevents the entry of invalid dates like February 30, June 31, or February 29 on a non-leap year.
 
 ![date-selection-manager](/images/date-selection-manager.png)
 
@@ -12,7 +12,6 @@ This manager takes care of date entries via select elements. It prevents the ent
     let dateSelectionManager = require('date-selection-manager');
     dateSelectionManager.loadDate(configObject); // the configObject parameter can be absent
 ```
-
 <br><br>
 # How To Use
 1. At the terminal do:
@@ -88,7 +87,6 @@ Where `configObject` can be patterned thus:
     yearChangeEventCallback: [optionalValue], // defaults to null
   }
 ```
-
 <br><br>
 Details on the names and default values of the configuration object properties are shown below:
 
@@ -118,7 +116,6 @@ yearStartDigit| '1940' | Where the select element representing "year" starts cou
 yearEndDigit | '2060' | The number at which the select element representing "year" ends.
 yearDefaultValue | '' | The value selected by default on the select element representing "year" once date-selection-manager is invoked.
 yearChangeEventCallback | null | A callback function that is called when the select element representing "year" changes value.
-
 <br><br>
 # Change-Event Callbacks
 If you want to do something whenever a select element changes value, invoke `dateSelectionManager` with a configObject having the appropriate ChangeEventCallback [dayChangeEventCallback, monthChangeEventCallback, yearChangeEventCallback]. You can pass a parameter to the corresponding callback function which will stand for the event object returned whenever a change occurs in the select element. For example:
@@ -139,8 +136,28 @@ If you want to do something whenever a select element changes value, invoke `dat
   });
 ```
 <br><br>
-##### Please send bug issues you may encounter to [Issues](https://www.github.com/DOkwufulueze/date-selection-manager/issues)
-
+## Acknowledgement
+I wish to acknowledge the authors and contributors of the following packages which were used in the `devDependencies` of this work:
+* autoprefixer
+* babel [cli, core, loader, preset-es2015]
+* chai
+* css-loader
+* jsdom
+* jshint
+* jshint-loader
+* mocha
+* node-sass
+* postcss-loader
+* sass-loader
+* style-loader
+* uglifyjs-webpack-plugin
+* watch
+* webpack
+<br><br>
+### Please send bug issues you may encounter to [Issues](https://www.github.com/DOkwufulueze/date-selection-manager/issues)
+<br><br>
+## Copyleft
+![Copyleft](/images/copyleft.png) 2017 Daniel Okwufulueze
 <br><br>
 ## Licence
-[GNU GPL-3.0](https://github.com/DOkwufulueze/date-selection-manager/blob/master/LICENCE.md)
+This package is distributed under the [GNU GPL-3.0](https://github.com/DOkwufulueze/date-selection-manager/blob/master/LICENCE.md) licence
