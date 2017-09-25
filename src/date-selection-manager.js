@@ -3,7 +3,7 @@
   Date: 13/02/2016
 */
 
-let dateManager = require('./DateManager');
+var dateManager = require('./DateManager');
 
 module.exports = {
   dayConfigObject: function (configObject) {
@@ -44,15 +44,15 @@ module.exports = {
   },
   loadDate: function (configObject) {
     configObject = configObject === undefined ? {} : configObject;
-    let daysObject = module.exports.createSelectObject({
+    var daysObject = module.exports.createSelectObject({
       type: 'day',
       day: module.exports.dayConfigObject(configObject),
     });
-    let monthsObject = module.exports.createSelectObject({
+    var monthsObject = module.exports.createSelectObject({
       type: 'month',
       month: module.exports.monthConfigObject(configObject),
     });
-    let yearsObject = module.exports.createSelectObject({
+    var yearsObject = module.exports.createSelectObject({
       type: 'year',
       year: module.exports.yearConfigObject(configObject),
     });

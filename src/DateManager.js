@@ -31,10 +31,10 @@ module.exports = {
     module.exports.createOptionElements(module.exports.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
   },
   iterateThroughRange: function (startDigit, endDigit, useNumberRangeDirectly) {
-    let arrayForOptions = [];
+    var arrayForOptions = [];
     startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
     endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
-    for (let i = startDigit; i <= endDigit; i++) {
+    for (var i = startDigit; i <= endDigit; i++) {
       arrayForOptions[i] = useNumberRangeDirectly ? i : module.exports.monthNames()[i - 1];
     }
 
@@ -44,7 +44,7 @@ module.exports = {
     if (clearPreviousOptionElements)
       module.exports.arrangeInitialOption();
     arrayForOptions.forEach(function (option) {
-      let optionElement = document.createElement('option');
+      var optionElement = document.createElement('option');
       optionElement.value = option;
       optionElement.innerHTML = option;
       if (module.exports.selectObject.selectElement) module.exports.selectObject.selectElement.appendChild(optionElement);
@@ -53,7 +53,7 @@ module.exports = {
   arrangeInitialOption: function () {
     if (module.exports.selectObject.selectElement) {
       module.exports.selectObject.selectElement.innerHTML = '';
-      let initialOption = document.createElement('option');
+      var initialOption = document.createElement('option');
       initialOption.value = module.exports.selectObject.initialOptionElementValue;
       initialOption.innerHTML = module.exports.selectObject.initialOptionElementText;
       module.exports.selectObject.selectElement.appendChild(initialOption);
@@ -110,12 +110,12 @@ module.exports = {
     }
   },
   removeExcessOption: function (selectElement, limit) {
-    for (let i = selectElement.options.length - 1; i > limit; i--) {
+    for (var i = selectElement.options.length - 1; i > limit; i--) {
       selectElement.removeChild(selectElement.options[i]);
     }
   },
   fireChangeEvent: function (element) {
-    let eventObject = document.createEvent('HTMLEvents');
+    var eventObject = document.createEvent('HTMLEvents');
     eventObject.initEvent('change', true, true);
     element.dispatchEvent(eventObject);
   }
