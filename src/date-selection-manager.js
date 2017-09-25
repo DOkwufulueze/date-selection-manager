@@ -61,7 +61,7 @@ module.exports = {
   createSelectObject: function (configObject) {
     configObject = configObject === undefined ? {} : configObject;
     return {
-      selectElement: configObject[configObject.type].container.querySelector(`select#${configObject[configObject.type].id}`),
+      selectElement: configObject[configObject.type].container.querySelector('select#' + configObject[configObject.type].id),
       initialOptionElementText: configObject[configObject.type].text,
       initialOptionElementValue: configObject[configObject.type].value,
       startDigit: configObject[configObject.type].startDigit,
