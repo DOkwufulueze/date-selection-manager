@@ -9,14 +9,14 @@ This package takes care of date entries via select elements. It prevents the ent
 ![date-selection-manager](/images/date-selection-manager.png)
 
 ```javascript
-    let dateSelectionManager = require('date-selection-manager');
-    dateSelectionManager.loadDate(configObject); // the configObject parameter can be absent
+    import dateSelectionManager from 'date-selection-manager';
+    dateSelectionManager.loadDate(configObject); // the configObject parameter may be absent
 ```
 <br><br>
 # How To Use
 1. At the terminal do:
     `cd path/to/your/project/`
-    
+
     ### if you want to use date-selection-manager in devDependencies
     `npm install --save-dev date-selection-manager`
 
@@ -37,7 +37,7 @@ This package takes care of date entries via select elements. It prevents the ent
 1. In your JS file which you may need to transpile using [babel](https://github.com/babel/babel) perhaps, do the following:
     * Require date-selection-manager
         ```
-          let dateSelectionManager = require('date-selection-manager');
+          import dateSelectionManager from 'date-selection-manager';
         ```
 
     * Invoke the manager to start managing your date DOM elements created in **step  2**

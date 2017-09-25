@@ -73,14 +73,18 @@
 "use strict";
 
 
-/***
-  Author: Daniel Okwufulueze
-  Date: 13/02/2016
-*/
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var dateManager = __webpack_require__(3);
+var _DateManager = __webpack_require__(3);
 
-module.exports = {
+var dateManager = new _DateManager.DateManager(); /***
+                                                    Author: Daniel Okwufulueze
+                                                    Date: 13/02/2016
+                                                  */
+
+var dateSelectionManager = {
   dayConfigObject: function dayConfigObject(configObject) {
     return {
       container: configObject.dayContainer || document,
@@ -117,24 +121,26 @@ module.exports = {
       changeEventCallback: configObject.yearChangeEventCallback || null
     };
   },
-  loadDate: function loadDate(configObject) {
-    configObject = configObject === undefined ? {} : configObject;
-    var daysObject = module.exports.createSelectObject({
+  loadDate: function loadDate() {
+    var configObject = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var daysObject = this.createSelectObject({
       type: 'day',
-      day: module.exports.dayConfigObject(configObject)
+      day: this.dayConfigObject(configObject)
     });
-    var monthsObject = module.exports.createSelectObject({
+    var monthsObject = this.createSelectObject({
       type: 'month',
-      month: module.exports.monthConfigObject(configObject)
+      month: this.monthConfigObject(configObject)
     });
-    var yearsObject = module.exports.createSelectObject({
+    var yearsObject = this.createSelectObject({
       type: 'year',
-      year: module.exports.yearConfigObject(configObject)
+      year: this.yearConfigObject(configObject)
     });
     dateManager.loadInitialDate(daysObject, monthsObject, yearsObject);
   },
-  createSelectObject: function createSelectObject(configObject) {
-    configObject = configObject === undefined ? {} : configObject;
+  createSelectObject: function createSelectObject() {
+    var configObject = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     return {
       selectElement: configObject[configObject.type].container.querySelector('select#' + configObject[configObject.type].id),
       initialOptionElementText: configObject[configObject.type].text,
@@ -149,6 +155,8 @@ module.exports = {
     return dateManager.monthNames();
   }
 };
+
+exports.default = dateSelectionManager;
 
 /***/ }),
 /* 1 */
@@ -227,127 +235,183 @@ _dateSelectionManager2.default.loadDate({
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /***
   Author: Daniel Okwufulueze
   Date: 13/02/2016
 */
 
-module.exports = {
-  loadInitialDate: function loadInitialDate(daysObject, monthsObject, yearsObject) {
-    module.exports.daysObject = daysObject;
-    module.exports.monthsObject = monthsObject;
-    module.exports.yearsObject = yearsObject;
-    module.exports.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
-    module.exports.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
-    module.exports.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
-    module.exports.addChangeListenerForDaysElement();
-    module.exports.addChangeListenerForMonthsElement();
-    module.exports.addChangeListenerForYearsElement();
-    module.exports.selectDefualtValues();
-  },
-  monthNames: function monthNames() {
-    return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  },
-  numberOfDaysInMonthsPerYearType: function numberOfDaysInMonthsPerYearType() {
-    return {
-      normalYear: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      leapYear: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    };
-  },
-  loadOptionElements: function loadOptionElements(selectObject, startDigit, endDigit, useNumberRangeDirectly, clearPreviousOptionElements) {
-    clearPreviousOptionElements = clearPreviousOptionElements === undefined ? true : clearPreviousOptionElements;
-    module.exports.selectObject = selectObject;
-    module.exports.createOptionElements(module.exports.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
-  },
-  iterateThroughRange: function iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly) {
-    var arrayForOptions = [];
-    startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
-    endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
-    for (var i = startDigit; i <= endDigit; i++) {
-      arrayForOptions[i] = useNumberRangeDirectly ? i : module.exports.monthNames()[i - 1];
-    }
+var DateManager = exports.DateManager = function () {
+  function DateManager() {
+    _classCallCheck(this, DateManager);
+  }
 
-    return arrayForOptions;
-  },
-  createOptionElements: function createOptionElements(arrayForOptions, clearPreviousOptionElements) {
-    if (clearPreviousOptionElements) module.exports.arrangeInitialOption();
-    arrayForOptions.forEach(function (option) {
-      var optionElement = document.createElement('option');
-      optionElement.value = option;
-      optionElement.innerHTML = option;
-      if (module.exports.selectObject.selectElement) module.exports.selectObject.selectElement.appendChild(optionElement);
-    });
-  },
-  arrangeInitialOption: function arrangeInitialOption() {
-    if (module.exports.selectObject.selectElement) {
-      module.exports.selectObject.selectElement.innerHTML = '';
-      var initialOption = document.createElement('option');
-      initialOption.value = module.exports.selectObject.initialOptionElementValue;
-      initialOption.innerHTML = module.exports.selectObject.initialOptionElementText;
-      module.exports.selectObject.selectElement.appendChild(initialOption);
+  _createClass(DateManager, [{
+    key: 'loadInitialDate',
+    value: function loadInitialDate(daysObject, monthsObject, yearsObject) {
+      this.daysObject = daysObject;
+      this.monthsObject = monthsObject;
+      this.yearsObject = yearsObject;
+      this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
+      this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
+      this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
+      this.addChangeListenerForDaysElement();
+      this.addChangeListenerForMonthsElement();
+      this.addChangeListenerForYearsElement();
+      this.selectDefualtValues();
     }
-  },
-  addChangeListenerForDaysElement: function addChangeListenerForDaysElement() {
-    if (module.exports.daysObject.selectElement) {
-      module.exports.daysObject.selectElement.addEventListener('change', function (changeEvent) {
-        if (module.exports.daysObject.onChange) module.exports.daysObject.onChange(changeEvent);
+  }, {
+    key: 'monthNames',
+    value: function monthNames() {
+      return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    }
+  }, {
+    key: 'numberOfDaysInMonthsPerYearType',
+    value: function numberOfDaysInMonthsPerYearType() {
+      return {
+        normalYear: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+        leapYear: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+      };
+    }
+  }, {
+    key: 'loadOptionElements',
+    value: function loadOptionElements(selectObject, startDigit, endDigit, useNumberRangeDirectly) {
+      var clearPreviousOptionElements = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+
+      this.selectObject = selectObject;
+      this.createOptionElements(this.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
+    }
+  }, {
+    key: 'iterateThroughRange',
+    value: function iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly) {
+      var arrayForOptions = [];
+      startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
+      endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
+      for (var i = startDigit; i <= endDigit; i++) {
+        arrayForOptions[i] = useNumberRangeDirectly ? i : this.monthNames()[i - 1];
+      }
+
+      return arrayForOptions;
+    }
+  }, {
+    key: 'createOptionElements',
+    value: function createOptionElements(arrayForOptions, clearPreviousOptionElements) {
+      var _this = this;
+
+      if (clearPreviousOptionElements) this.arrangeInitialOption();
+      arrayForOptions.forEach(function (option) {
+        var optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.innerHTML = option;
+        if (_this.selectObject.selectElement) _this.selectObject.selectElement.appendChild(optionElement);
       });
     }
-  },
-  addChangeListenerForMonthsElement: function addChangeListenerForMonthsElement() {
-    if (module.exports.monthsObject.selectElement) {
-      module.exports.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
-        if (module.exports.yearsObject.selectElement && module.exports.yearsObject.selectElement.value === '') module.exports.processForYearType(module.exports.monthsObject.selectElement.selectedIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear);else module.exports.processAppropriately(module.exports.monthsObject.selectElement.selectedIndex);
-        if (module.exports.monthsObject.onChange) module.exports.monthsObject.onChange(changeEvent);
-      });
-    }
-  },
-  addChangeListenerForYearsElement: function addChangeListenerForYearsElement() {
-    if (module.exports.yearsObject.selectElement) {
-      module.exports.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
-        if (module.exports.yearsObject.selectElement.value === '' && module.exports.monthsObject.selectElement) module.exports.processForYearType(module.exports.monthsObject.selectElement.selectedIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear);else module.exports.processAppropriately(module.exports.monthsObject.selectElement.selectedIndex);
-        if (module.exports.yearsObject.onChange) module.exports.yearsObject.onChange(changeEvent);
-      });
-    }
-  },
-  selectDefualtValues: function selectDefualtValues() {
-    if (module.exports.daysObject.selectElement) module.exports.daysObject.selectElement.value = module.exports.daysObject.defaultValue;
-    if (module.exports.monthsObject.selectElement) module.exports.monthsObject.selectElement.value = module.exports.monthsObject.defaultValue;
-    if (module.exports.yearsObject.selectElement) module.exports.yearsObject.selectElement.value = module.exports.yearsObject.defaultValue;
-  },
-  processAppropriately: function processAppropriately(monthIndex) {
-    // jshint evil: true
-
-    if (module.exports.yearsObject.selectElement) {
-      if (eval(module.exports.yearsObject.selectElement.value) % 4 === 0) module.exports.processForYearType(monthIndex, module.exports.numberOfDaysInMonthsPerYearType().leapYear);else module.exports.processForYearType(monthIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear);
-    }
-  },
-  processForYearType: function processForYearType(monthIndex, yearType) {
-    // jshint evil: true
-
-    if (monthIndex > 0 && module.exports.daysObject.selectElement) {
-      if (eval(module.exports.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
-        module.exports.daysObject.selectElement.selectedIndex = 0;
-        module.exports.fireChangeEvent(module.exports.daysObject.selectElement);
-        module.exports.loadOptionElements(module.exports.daysObject, 1, yearType[monthIndex - 1], true);
-      } else if (eval(module.exports.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
-        module.exports.removeExcessOption(module.exports.daysObject.selectElement, yearType[monthIndex - 1]);
-      } else if (eval(module.exports.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
-        module.exports.loadOptionElements(module.exports.daysObject, eval(module.exports.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
+  }, {
+    key: 'arrangeInitialOption',
+    value: function arrangeInitialOption() {
+      if (this.selectObject.selectElement) {
+        this.selectObject.selectElement.innerHTML = '';
+        var initialOption = document.createElement('option');
+        initialOption.value = this.selectObject.initialOptionElementValue;
+        initialOption.innerHTML = this.selectObject.initialOptionElementText;
+        this.selectObject.selectElement.appendChild(initialOption);
       }
     }
-  },
-  removeExcessOption: function removeExcessOption(selectElement, limit) {
-    for (var i = selectElement.options.length - 1; i > limit; i--) {
-      selectElement.removeChild(selectElement.options[i]);
+  }, {
+    key: 'addChangeListenerForDaysElement',
+    value: function addChangeListenerForDaysElement() {
+      var _this2 = this;
+
+      if (this.daysObject.selectElement) {
+        this.daysObject.selectElement.addEventListener('change', function (changeEvent) {
+          if (_this2.daysObject.onChange) _this2.daysObject.onChange(changeEvent);
+        });
+      }
     }
-  },
-  fireChangeEvent: function fireChangeEvent(element) {
-    var eventObject = document.createEvent('HTMLEvents');
-    eventObject.initEvent('change', true, true);
-    element.dispatchEvent(eventObject);
-  }
-};
+  }, {
+    key: 'addChangeListenerForMonthsElement',
+    value: function addChangeListenerForMonthsElement() {
+      var _this3 = this;
+
+      if (this.monthsObject.selectElement) {
+        this.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
+          if (_this3.yearsObject.selectElement && _this3.yearsObject.selectElement.value === '') _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
+          if (_this3.monthsObject.onChange) _this3.monthsObject.onChange(changeEvent);
+        });
+      }
+    }
+  }, {
+    key: 'addChangeListenerForYearsElement',
+    value: function addChangeListenerForYearsElement() {
+      var _this4 = this;
+
+      if (this.yearsObject.selectElement) {
+        this.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
+          if (_this4.yearsObject.selectElement.value === '' && _this4.monthsObject.selectElement) _this4.processForYearType(_this4.monthsObject.selectElement.selectedIndex, _this4.numberOfDaysInMonthsPerYearType().normalYear);else _this4.processAppropriately(_this4.monthsObject.selectElement.selectedIndex);
+          if (_this4.yearsObject.onChange) _this4.yearsObject.onChange(changeEvent);
+        });
+      }
+    }
+  }, {
+    key: 'selectDefualtValues',
+    value: function selectDefualtValues() {
+      if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
+      if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
+      if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
+    }
+  }, {
+    key: 'processAppropriately',
+    value: function processAppropriately(monthIndex) {
+      // jshint evil: true
+
+      if (this.yearsObject.selectElement) {
+        if (eval(this.yearsObject.selectElement.value) % 4 === 0) this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear);else this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear);
+      }
+    }
+  }, {
+    key: 'processForYearType',
+    value: function processForYearType(monthIndex, yearType) {
+      // jshint evil: true
+
+      if (monthIndex > 0 && this.daysObject.selectElement) {
+        if (eval(this.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
+          this.daysObject.selectElement.selectedIndex = 0;
+          this.fireChangeEvent(this.daysObject.selectElement);
+          this.loadOptionElements(this.daysObject, 1, yearType[monthIndex - 1], true);
+        } else if (eval(this.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
+          this.removeExcessOption(this.daysObject.selectElement, yearType[monthIndex - 1]);
+        } else if (eval(this.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
+          this.loadOptionElements(this.daysObject, eval(this.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
+        }
+      }
+    }
+  }, {
+    key: 'removeExcessOption',
+    value: function removeExcessOption(selectElement, limit) {
+      for (var i = selectElement.options.length - 1; i > limit; i--) {
+        selectElement.removeChild(selectElement.options[i]);
+      }
+    }
+  }, {
+    key: 'fireChangeEvent',
+    value: function fireChangeEvent(element) {
+      var eventObject = document.createEvent('HTMLEvents');
+      eventObject.initEvent('change', true, true);
+      element.dispatchEvent(eventObject);
+    }
+  }]);
+
+  return DateManager;
+}();
+
+;
 
 /***/ }),
 /* 4 */

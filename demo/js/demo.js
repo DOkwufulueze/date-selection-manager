@@ -5,7 +5,7 @@
 
 require('../css/demo');
 
-let dateSelectionManager = require('../../src/date-selection-manager');
+import dateSelectionManager from '../../src/date-selection-manager';
 
 const dateDOM = new DOMParser().parseFromString(`
   <div id='wrapper'>

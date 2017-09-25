@@ -3,131 +3,118 @@
   Date: 13/02/2016
 */
 
-module.exports = class DateManager {
-  loadInitialDate(daysObject, monthsObject, yearsObject) {
-    this.daysObject = daysObject;
-    this.monthsObject = monthsObject;
-    this.yearsObject = yearsObject;
-    this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
-    this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
-    this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
-    this.addChangeListenerForDaysElement();
-    this.addChangeListenerForMonthsElement();
-    this.addChangeListenerForYearsElement();
-    this.selectDefualtValues();
-  }
-
-  monthNames() {
+module.exports = {
+  loadInitialDate : function (daysObject, monthsObject, yearsObject) {
+    module.exports.daysObject = daysObject;
+    module.exports.monthsObject = monthsObject;
+    module.exports.yearsObject = yearsObject;
+    module.exports.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
+    module.exports.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
+    module.exports.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
+    module.exports.addChangeListenerForDaysElement();
+    module.exports.addChangeListenerForMonthsElement();
+    module.exports.addChangeListenerForYearsElement();
+    module.exports.selectDefualtValues();
+  },
+  monthNames: function () {
     return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  }
-
-  numberOfDaysInMonthsPerYearType() {
+  },
+  numberOfDaysInMonthsPerYearType: function () {
     return {
       normalYear: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
       leapYear: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     };
-  }
-
-  loadOptionElements(selectObject, startDigit, endDigit, useNumberRangeDirectly, clearPreviousOptionElements = true) {
-    this.selectObject = selectObject;
-    this.createOptionElements(this.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
-  }
-
-  iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly) {
+  },
+  loadOptionElements: function (selectObject, startDigit, endDigit, useNumberRangeDirectly, clearPreviousOptionElements) {
+    clearPreviousOptionElements = clearPreviousOptionElements === undefined ? true : clearPreviousOptionElements;
+    module.exports.selectObject = selectObject;
+    module.exports.createOptionElements(module.exports.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
+  },
+  iterateThroughRange: function (startDigit, endDigit, useNumberRangeDirectly) {
     let arrayForOptions = [];
     startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
     endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
     for (let i = startDigit; i <= endDigit; i++) {
-      arrayForOptions[i] = useNumberRangeDirectly ? i : this.monthNames()[i - 1];
+      arrayForOptions[i] = useNumberRangeDirectly ? i : module.exports.monthNames()[i - 1];
     }
 
     return arrayForOptions;
-  }
-
-  createOptionElements(arrayForOptions, clearPreviousOptionElements) {
+  },
+  createOptionElements: function (arrayForOptions, clearPreviousOptionElements) {
     if (clearPreviousOptionElements)
-      this.arrangeInitialOption();
-    arrayForOptions.forEach((option) => {
+      module.exports.arrangeInitialOption();
+    arrayForOptions.forEach(function (option) {
       let optionElement = document.createElement('option');
       optionElement.value = option;
       optionElement.innerHTML = option;
-      if (this.selectObject.selectElement) this.selectObject.selectElement.appendChild(optionElement);
+      if (module.exports.selectObject.selectElement) module.exports.selectObject.selectElement.appendChild(optionElement);
     });
-  }
-
-  arrangeInitialOption() {
-    if (this.selectObject.selectElement) {
-      this.selectObject.selectElement.innerHTML = '';
+  },
+  arrangeInitialOption: function () {
+    if (module.exports.selectObject.selectElement) {
+      module.exports.selectObject.selectElement.innerHTML = '';
       let initialOption = document.createElement('option');
-      initialOption.value = this.selectObject.initialOptionElementValue;
-      initialOption.innerHTML = this.selectObject.initialOptionElementText;
-      this.selectObject.selectElement.appendChild(initialOption);
+      initialOption.value = module.exports.selectObject.initialOptionElementValue;
+      initialOption.innerHTML = module.exports.selectObject.initialOptionElementText;
+      module.exports.selectObject.selectElement.appendChild(initialOption);
     }
-  }
-
-  addChangeListenerForDaysElement() {
-    if (this.daysObject.selectElement) {
-      this.daysObject.selectElement.addEventListener('change', (changeEvent) => {
-        if (this.daysObject.onChange) this.daysObject.onChange(changeEvent);
+  },
+  addChangeListenerForDaysElement: function () {
+    if (module.exports.daysObject.selectElement) {
+      module.exports.daysObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (module.exports.daysObject.onChange) module.exports.daysObject.onChange(changeEvent);
       });
     }
-  }
-
-  addChangeListenerForMonthsElement() {
-    if (this.monthsObject.selectElement) {
-      this.monthsObject.selectElement.addEventListener('change', (changeEvent) => {
-        if (this.yearsObject.selectElement && this.yearsObject.selectElement.value === '') this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-        if (this.monthsObject.onChange) this.monthsObject.onChange(changeEvent);
+  },
+  addChangeListenerForMonthsElement: function () {
+    if (module.exports.monthsObject.selectElement) {
+      module.exports.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (module.exports.yearsObject.selectElement && module.exports.yearsObject.selectElement.value === '') module.exports.processForYearType(module.exports.monthsObject.selectElement.selectedIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear); else module.exports.processAppropriately(module.exports.monthsObject.selectElement.selectedIndex);
+        if (module.exports.monthsObject.onChange) module.exports.monthsObject.onChange(changeEvent);
       });
     }
-  }
-
-  addChangeListenerForYearsElement() {
-    if (this.yearsObject.selectElement) {
-      this.yearsObject.selectElement.addEventListener('change', (changeEvent) => {
-        if (this.yearsObject.selectElement.value === '' && this.monthsObject.selectElement) this.processForYearType(this.monthsObject.selectElement.selectedIndex, this.numberOfDaysInMonthsPerYearType().normalYear); else this.processAppropriately(this.monthsObject.selectElement.selectedIndex);
-        if (this.yearsObject.onChange) this.yearsObject.onChange(changeEvent);
+  },
+  addChangeListenerForYearsElement: function () {
+    if (module.exports.yearsObject.selectElement) {
+      module.exports.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (module.exports.yearsObject.selectElement.value === '' && module.exports.monthsObject.selectElement) module.exports.processForYearType(module.exports.monthsObject.selectElement.selectedIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear); else module.exports.processAppropriately(module.exports.monthsObject.selectElement.selectedIndex);
+        if (module.exports.yearsObject.onChange) module.exports.yearsObject.onChange(changeEvent);
       });
     }
-  }
-
-  selectDefualtValues() {
-    if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
-    if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
-    if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
-  }
-
-  processAppropriately(monthIndex) {
+  },
+  selectDefualtValues: function () {
+    if (module.exports.daysObject.selectElement) module.exports.daysObject.selectElement.value = module.exports.daysObject.defaultValue;
+    if (module.exports.monthsObject.selectElement) module.exports.monthsObject.selectElement.value = module.exports.monthsObject.defaultValue;
+    if (module.exports.yearsObject.selectElement) module.exports.yearsObject.selectElement.value = module.exports.yearsObject.defaultValue;
+  },
+  processAppropriately: function (monthIndex) {
     // jshint evil: true
 
-    if (this.yearsObject.selectElement) {
-      if (eval(this.yearsObject.selectElement.value) % 4 === 0) this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear); else this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear);
+    if (module.exports.yearsObject.selectElement) {
+      if (eval(module.exports.yearsObject.selectElement.value) % 4 === 0) module.exports.processForYearType(monthIndex, module.exports.numberOfDaysInMonthsPerYearType().leapYear); else module.exports.processForYearType(monthIndex, module.exports.numberOfDaysInMonthsPerYearType().normalYear);
     }
-  }
-
-  processForYearType(monthIndex, yearType) {
+  },
+  processForYearType: function (monthIndex, yearType) {
     // jshint evil: true
 
-    if (monthIndex > 0 && this.daysObject.selectElement) {
-      if (eval(this.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
-        this.daysObject.selectElement.selectedIndex = 0;
-        this.fireChangeEvent(this.daysObject.selectElement);
-        this.loadOptionElements(this.daysObject, 1, yearType[monthIndex - 1], true);
-      } else if (eval(this.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
-        this.removeExcessOption(this.daysObject.selectElement, yearType[monthIndex - 1]);
-      } else if (eval(this.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
-        this.loadOptionElements(this.daysObject, eval(this.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
+    if (monthIndex > 0 && module.exports.daysObject.selectElement) {
+      if (eval(module.exports.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
+        module.exports.daysObject.selectElement.selectedIndex = 0;
+        module.exports.fireChangeEvent(module.exports.daysObject.selectElement);
+        module.exports.loadOptionElements(module.exports.daysObject, 1, yearType[monthIndex - 1], true);
+      } else if (eval(module.exports.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
+        module.exports.removeExcessOption(module.exports.daysObject.selectElement, yearType[monthIndex - 1]);
+      } else if (eval(module.exports.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
+        module.exports.loadOptionElements(module.exports.daysObject, eval(module.exports.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
       }
     }
-  }
-
-  removeExcessOption(selectElement, limit) {
+  },
+  removeExcessOption: function (selectElement, limit) {
     for (let i = selectElement.options.length - 1; i > limit; i--) {
       selectElement.removeChild(selectElement.options[i]);
     }
-  }
-
-  fireChangeEvent(element) {
+  },
+  fireChangeEvent: function (element) {
     let eventObject = document.createEvent('HTMLEvents');
     eventObject.initEvent('change', true, true);
     element.dispatchEvent(eventObject);

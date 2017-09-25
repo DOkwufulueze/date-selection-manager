@@ -3,11 +3,10 @@
   Date: 13/02/2016
 */
 
-let DateManager = require('./DateManager');
-let dateManager = new DateManager();
+let dateManager = require('./DateManager');
 
 module.exports = {
-  dayConfigObject: (configObject) => {
+  dayConfigObject: function (configObject) {
     return {
       container: configObject.dayContainer || document,
       id: configObject.dayId || 'day',
@@ -19,7 +18,7 @@ module.exports = {
       changeEventCallback: configObject.dayChangeEventCallback || null,
     };
   },
-  monthConfigObject: (configObject) => {
+  monthConfigObject: function (configObject) {
     return {
       container: configObject.monthContainer || document,
       id: configObject.monthId || 'month',
@@ -31,7 +30,7 @@ module.exports = {
       changeEventCallback: configObject.monthChangeEventCallback || null,
     };
   },
-  yearConfigObject: (configObject) => {
+  yearConfigObject: function (configObject) {
     return {
       container: configObject.yearContainer || document,
       id: configObject.yearId || 'year',
@@ -43,7 +42,8 @@ module.exports = {
       changeEventCallback: configObject.yearChangeEventCallback || null,
     };
   },
-  loadDate: (configObject = {}) => {
+  loadDate: function (configObject) {
+    configObject = configObject === undefined ? {} : configObject;
     let daysObject = module.exports.createSelectObject({
       type: 'day',
       day: module.exports.dayConfigObject(configObject),
@@ -58,7 +58,8 @@ module.exports = {
     });
     dateManager.loadInitialDate(daysObject, monthsObject, yearsObject);
   },
-  createSelectObject: (configObject = {}) => {
+  createSelectObject: function (configObject) {
+    configObject = configObject === undefined ? {} : configObject;
     return {
       selectElement: configObject[configObject.type].container.querySelector(`select#${configObject[configObject.type].id}`),
       initialOptionElementText: configObject[configObject.type].text,
@@ -69,7 +70,7 @@ module.exports = {
       onChange: configObject[configObject.type].changeEventCallback,
     };
   },
-  getMonthNames: () => {
+  getMonthNames: function () {
     return dateManager.monthNames();
   }
 };
