@@ -78,8 +78,7 @@
   Date: 13/02/2016
 */
 
-var DateManager = __webpack_require__(3);
-var dateManager = new DateManager();
+var dateManager = __webpack_require__(3);
 
 module.exports = {
   dayConfigObject: function dayConfigObject(configObject) {
@@ -226,177 +225,136 @@ dateSelectionManager.loadDate({
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /***
   Author: Daniel Okwufulueze
   Date: 13/02/2016
 */
 
-module.exports = function () {
-  function DateManager() {
-    _classCallCheck(this, DateManager);
-  }
+module.exports = {
+  loadInitialDate: function loadInitialDate(daysObject, monthsObject, yearsObject) {
+    this.daysObject = daysObject;
+    this.monthsObject = monthsObject;
+    this.yearsObject = yearsObject;
+    this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
+    this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
+    this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
+    this.addChangeListenerForDaysElement();
+    this.addChangeListenerForMonthsElement();
+    this.addChangeListenerForYearsElement();
+    this.selectDefualtValues();
+  },
+  monthNames: function monthNames() {
+    return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  },
+  numberOfDaysInMonthsPerYearType: function numberOfDaysInMonthsPerYearType() {
+    return {
+      normalYear: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+      leapYear: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    };
+  },
+  loadOptionElements: function loadOptionElements(selectObject, startDigit, endDigit, useNumberRangeDirectly) {
+    var clearPreviousOptionElements = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
 
-  _createClass(DateManager, [{
-    key: 'loadInitialDate',
-    value: function loadInitialDate(daysObject, monthsObject, yearsObject) {
-      this.daysObject = daysObject;
-      this.monthsObject = monthsObject;
-      this.yearsObject = yearsObject;
-      this.loadOptionElements(daysObject, daysObject.startDigit, daysObject.endDigit, true);
-      this.loadOptionElements(monthsObject, monthsObject.startDigit, monthsObject.endDigit, false);
-      this.loadOptionElements(yearsObject, yearsObject.startDigit, yearsObject.endDigit, true);
-      this.addChangeListenerForDaysElement();
-      this.addChangeListenerForMonthsElement();
-      this.addChangeListenerForYearsElement();
-      this.selectDefualtValues();
+    this.selectObject = selectObject;
+    this.createOptionElements(this.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
+  },
+  iterateThroughRange: function iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly) {
+    var arrayForOptions = [];
+    startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
+    endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
+    for (var i = startDigit; i <= endDigit; i++) {
+      arrayForOptions[i] = useNumberRangeDirectly ? i : this.monthNames()[i - 1];
     }
-  }, {
-    key: 'monthNames',
-    value: function monthNames() {
-      return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    }
-  }, {
-    key: 'numberOfDaysInMonthsPerYearType',
-    value: function numberOfDaysInMonthsPerYearType() {
-      return {
-        normalYear: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        leapYear: [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-      };
-    }
-  }, {
-    key: 'loadOptionElements',
-    value: function loadOptionElements(selectObject, startDigit, endDigit, useNumberRangeDirectly) {
-      var clearPreviousOptionElements = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
 
-      this.selectObject = selectObject;
-      this.createOptionElements(this.iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly), clearPreviousOptionElements);
-    }
-  }, {
-    key: 'iterateThroughRange',
-    value: function iterateThroughRange(startDigit, endDigit, useNumberRangeDirectly) {
-      var arrayForOptions = [];
-      startDigit = (startDigit < 1 || startDigit > 12) && !useNumberRangeDirectly ? 1 : startDigit;
-      endDigit = (endDigit < 1 || endDigit > 12) && !useNumberRangeDirectly ? 1 : endDigit;
-      for (var i = startDigit; i <= endDigit; i++) {
-        arrayForOptions[i] = useNumberRangeDirectly ? i : this.monthNames()[i - 1];
-      }
+    return arrayForOptions;
+  },
+  createOptionElements: function createOptionElements(arrayForOptions, clearPreviousOptionElements) {
+    var _this = this;
 
-      return arrayForOptions;
+    if (clearPreviousOptionElements) this.arrangeInitialOption();
+    arrayForOptions.forEach(function (option) {
+      var optionElement = document.createElement('option');
+      optionElement.value = option;
+      optionElement.innerHTML = option;
+      if (_this.selectObject.selectElement) _this.selectObject.selectElement.appendChild(optionElement);
+    });
+  },
+  arrangeInitialOption: function arrangeInitialOption() {
+    if (this.selectObject.selectElement) {
+      this.selectObject.selectElement.innerHTML = '';
+      var initialOption = document.createElement('option');
+      initialOption.value = this.selectObject.initialOptionElementValue;
+      initialOption.innerHTML = this.selectObject.initialOptionElementText;
+      this.selectObject.selectElement.appendChild(initialOption);
     }
-  }, {
-    key: 'createOptionElements',
-    value: function createOptionElements(arrayForOptions, clearPreviousOptionElements) {
-      var _this = this;
+  },
+  addChangeListenerForDaysElement: function addChangeListenerForDaysElement() {
+    var _this2 = this;
 
-      if (clearPreviousOptionElements) this.arrangeInitialOption();
-      arrayForOptions.forEach(function (option) {
-        var optionElement = document.createElement('option');
-        optionElement.value = option;
-        optionElement.innerHTML = option;
-        if (_this.selectObject.selectElement) _this.selectObject.selectElement.appendChild(optionElement);
+    if (this.daysObject.selectElement) {
+      this.daysObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (_this2.daysObject.onChange) _this2.daysObject.onChange(changeEvent);
       });
     }
-  }, {
-    key: 'arrangeInitialOption',
-    value: function arrangeInitialOption() {
-      if (this.selectObject.selectElement) {
-        this.selectObject.selectElement.innerHTML = '';
-        var initialOption = document.createElement('option');
-        initialOption.value = this.selectObject.initialOptionElementValue;
-        initialOption.innerHTML = this.selectObject.initialOptionElementText;
-        this.selectObject.selectElement.appendChild(initialOption);
-      }
-    }
-  }, {
-    key: 'addChangeListenerForDaysElement',
-    value: function addChangeListenerForDaysElement() {
-      var _this2 = this;
+  },
+  addChangeListenerForMonthsElement: function addChangeListenerForMonthsElement() {
+    var _this3 = this;
 
-      if (this.daysObject.selectElement) {
-        this.daysObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this2.daysObject.onChange) _this2.daysObject.onChange(changeEvent);
-        });
-      }
+    if (this.monthsObject.selectElement) {
+      this.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (_this3.yearsObject.selectElement && _this3.yearsObject.selectElement.value === '') _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
+        if (_this3.monthsObject.onChange) _this3.monthsObject.onChange(changeEvent);
+      });
     }
-  }, {
-    key: 'addChangeListenerForMonthsElement',
-    value: function addChangeListenerForMonthsElement() {
-      var _this3 = this;
+  },
+  addChangeListenerForYearsElement: function addChangeListenerForYearsElement() {
+    var _this4 = this;
 
-      if (this.monthsObject.selectElement) {
-        this.monthsObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this3.yearsObject.selectElement && _this3.yearsObject.selectElement.value === '') _this3.processForYearType(_this3.monthsObject.selectElement.selectedIndex, _this3.numberOfDaysInMonthsPerYearType().normalYear);else _this3.processAppropriately(_this3.monthsObject.selectElement.selectedIndex);
-          if (_this3.monthsObject.onChange) _this3.monthsObject.onChange(changeEvent);
-        });
-      }
+    if (this.yearsObject.selectElement) {
+      this.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
+        if (_this4.yearsObject.selectElement.value === '' && _this4.monthsObject.selectElement) _this4.processForYearType(_this4.monthsObject.selectElement.selectedIndex, _this4.numberOfDaysInMonthsPerYearType().normalYear);else _this4.processAppropriately(_this4.monthsObject.selectElement.selectedIndex);
+        if (_this4.yearsObject.onChange) _this4.yearsObject.onChange(changeEvent);
+      });
     }
-  }, {
-    key: 'addChangeListenerForYearsElement',
-    value: function addChangeListenerForYearsElement() {
-      var _this4 = this;
+  },
+  selectDefualtValues: function selectDefualtValues() {
+    if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
+    if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
+    if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
+  },
+  processAppropriately: function processAppropriately(monthIndex) {
+    // jshint evil: true
 
-      if (this.yearsObject.selectElement) {
-        this.yearsObject.selectElement.addEventListener('change', function (changeEvent) {
-          if (_this4.yearsObject.selectElement.value === '' && _this4.monthsObject.selectElement) _this4.processForYearType(_this4.monthsObject.selectElement.selectedIndex, _this4.numberOfDaysInMonthsPerYearType().normalYear);else _this4.processAppropriately(_this4.monthsObject.selectElement.selectedIndex);
-          if (_this4.yearsObject.onChange) _this4.yearsObject.onChange(changeEvent);
-        });
-      }
+    if (this.yearsObject.selectElement) {
+      if (eval(this.yearsObject.selectElement.value) % 4 === 0) this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear);else this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear);
     }
-  }, {
-    key: 'selectDefualtValues',
-    value: function selectDefualtValues() {
-      if (this.daysObject.selectElement) this.daysObject.selectElement.value = this.daysObject.defaultValue;
-      if (this.monthsObject.selectElement) this.monthsObject.selectElement.value = this.monthsObject.defaultValue;
-      if (this.yearsObject.selectElement) this.yearsObject.selectElement.value = this.yearsObject.defaultValue;
-    }
-  }, {
-    key: 'processAppropriately',
-    value: function processAppropriately(monthIndex) {
-      // jshint evil: true
+  },
+  processForYearType: function processForYearType(monthIndex, yearType) {
+    // jshint evil: true
 
-      if (this.yearsObject.selectElement) {
-        if (eval(this.yearsObject.selectElement.value) % 4 === 0) this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().leapYear);else this.processForYearType(monthIndex, this.numberOfDaysInMonthsPerYearType().normalYear);
+    if (monthIndex > 0 && this.daysObject.selectElement) {
+      if (eval(this.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
+        this.daysObject.selectElement.selectedIndex = 0;
+        this.fireChangeEvent(this.daysObject.selectElement);
+        this.loadOptionElements(this.daysObject, 1, yearType[monthIndex - 1], true);
+      } else if (eval(this.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
+        this.removeExcessOption(this.daysObject.selectElement, yearType[monthIndex - 1]);
+      } else if (eval(this.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
+        this.loadOptionElements(this.daysObject, eval(this.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
       }
     }
-  }, {
-    key: 'processForYearType',
-    value: function processForYearType(monthIndex, yearType) {
-      // jshint evil: true
-
-      if (monthIndex > 0 && this.daysObject.selectElement) {
-        if (eval(this.daysObject.selectElement.value) > yearType[monthIndex - 1]) {
-          this.daysObject.selectElement.selectedIndex = 0;
-          this.fireChangeEvent(this.daysObject.selectElement);
-          this.loadOptionElements(this.daysObject, 1, yearType[monthIndex - 1], true);
-        } else if (eval(this.daysObject.selectElement.lastChild.value) > yearType[monthIndex - 1]) {
-          this.removeExcessOption(this.daysObject.selectElement, yearType[monthIndex - 1]);
-        } else if (eval(this.daysObject.selectElement.lastChild.value) < yearType[monthIndex - 1]) {
-          this.loadOptionElements(this.daysObject, eval(this.daysObject.selectElement.lastChild.value) + 1, yearType[monthIndex - 1], true, false);
-        }
-      }
+  },
+  removeExcessOption: function removeExcessOption(selectElement, limit) {
+    for (var i = selectElement.options.length - 1; i > limit; i--) {
+      selectElement.removeChild(selectElement.options[i]);
     }
-  }, {
-    key: 'removeExcessOption',
-    value: function removeExcessOption(selectElement, limit) {
-      for (var i = selectElement.options.length - 1; i > limit; i--) {
-        selectElement.removeChild(selectElement.options[i]);
-      }
-    }
-  }, {
-    key: 'fireChangeEvent',
-    value: function fireChangeEvent(element) {
-      var eventObject = document.createEvent('HTMLEvents');
-      eventObject.initEvent('change', true, true);
-      element.dispatchEvent(eventObject);
-    }
-  }]);
-
-  return DateManager;
-}();
+  },
+  fireChangeEvent: function fireChangeEvent(element) {
+    var eventObject = document.createEvent('HTMLEvents');
+    eventObject.initEvent('change', true, true);
+    element.dispatchEvent(eventObject);
+  }
+};
 
 /***/ }),
 /* 4 */
